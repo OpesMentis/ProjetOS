@@ -75,8 +75,6 @@ int main() {
 	
 	*data = acqui_info(path);
 	
-	printf("ok\n");
-	
 	print_list(*data);
 	
 	return 0;

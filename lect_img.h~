@@ -27,4 +27,4 @@ typedef struct list {
 } list;
 
 void add_node(char * addr, list * data);
-void print_list(list data)
+void print_list(list data);
