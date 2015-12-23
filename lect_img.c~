@@ -19,7 +19,6 @@ list acqui_info(char * path) {
 				ff = malloc(sizeof(char[100]));
 				strcat(ff, path);
 				strcat(ff, dir->d_name);
-				printf("%s\n", ff);
 				
 				add_node(ff, desc_img);
 			}
@@ -77,5 +76,5 @@ int main() {
 	
 	print_list(*data);
 	
-	return 0;
+	return 1;
 }

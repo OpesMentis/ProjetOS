@@ -1,5 +1,5 @@
-lect_img: lect_img.o
-	gcc -o lect_img lect_img.o
+crypt_img: crypt_img.o
+	gcc -o crypt_img crypt_img.o
 	
-lect_img.o: lect_img.c
-	gcc -o lect_img.o -c lect_img.c -Wall
+crypt_img.o: crypt_img.c
+	gcc -o crypt_img.o -c crypt_img.c mem_targa.c -W -Wall

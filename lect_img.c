@@ -67,6 +67,7 @@ void print_list(list data) {
 	}
 }
 
+/*
 int main() {
 	char * path = "./images-test/";
 	
@@ -76,5 +77,7 @@ int main() {
 	
 	print_list(*data);
 	
-	return 0;
+	return 1;
 }
+
+*/

@@ -1,5 +1,13 @@
-lect_img: lect_img.o
-	gcc -o lect_img lect_img.o
+default : projos
+
+projos : crypt_img.o lect_img.o mem_targa.o
+	gcc -g -Wall crypt_img.o lect_img.o mem_targa.o -o projos 
 	
-lect_img.o: lect_img.c
-	gcc -o lect_img.o -c lect_img.c -W -Wall
+mem_targa.o : mem_targa.c mem_targa.h 
+	gcc -g -Wall -c mem_targa.c -o mem_targa.o
+	
+lect_img.o : lect_img.c mem_targa.h 
+	gcc -g -Wall -c lect_img.c -o lect_img.o
+	
+crypt_img.o : crypt_img.c crypt_img.h 
+	gcc -g -Wall -c crypt_img.c -o crypt_img.o

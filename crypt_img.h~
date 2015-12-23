@@ -1,0 +1,24 @@
+#ifndef _CRYPTIMGH_
+#define _CRYPTIMGH_
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <unistd.h>
+
+typedef struct image_desc_ {
+	char *fname;
+  	uint16_t width;
+  	uint16_t height;
+  	uint8_t *pRed;
+  	uint8_t *pBlue;
+  	uint8_t *pGreen;
+} image_desc;
+
+int image_clone(image_desc i_img, image_desc *p_img);
+int image_cesar(image_desc i_img, image_desc *p_img);
+int x_image_cesar(image_desc i_img, image_desc *p_img);
+int tp(int a, int h, int l);
+int x_tp(int b, int h, int l);
+
+#endif
