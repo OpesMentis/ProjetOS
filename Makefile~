@@ -1,7 +1,7 @@
 default : projos
 
 projos : crypt_img.o lect_img.o mem_targa.o
-	gcc -g -Wall crypt_img.o lect_img.o mem_targa.o # serveur.o client.o -o projos 
+	gcc -g -Wall crypt_img.o lect_img.o mem_targa.o -o projos 
 	
 mem_targa.o : mem_targa.c mem_targa.h 
 	gcc -g -Wall -c mem_targa.c -o mem_targa.o

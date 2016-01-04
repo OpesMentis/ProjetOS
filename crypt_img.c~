@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <math.h>
 #include "crypt_img.h"
 #include "mem_targa.h"
 
@@ -21,11 +22,25 @@ int image_clone(image_desc i_img, image_desc *p_img) {
   	return 1;
 }
 
-// chiffre avec un algo de Cesar un peu tuned
-int image_cesar(image_desc i_img, image_desc *p_img) {
-	uint16_t planeSize;
+// convertit un nombre decimal en base 256 sous forme d'un tableau
+int * decTo256(int n) {
+	int L = log(n) / log(256) + 1;
+	int nb[L];
+	int i = 0;
 	
-	int cle = 217;
+	for (i = 0; i < L; i++) {
+		nb[L-i-1] = n % 256;
+		printf("%i\n", nb[L-i-1]);
+		n /= 256;
+	}
+	return nb;
+}
+	
+
+// chiffre avec un algo de Cesar un peu tuned
+int image_cesar(image_desc i_img, image_desc *p_img, int cle) {
+	uint16_t planeSize;
+
 	int i = 0;
 	planeSize = mallocImageContent(p_img, i_img.width, i_img.height);
 
@@ -107,7 +122,11 @@ int x_tp(int b, int h, int l) {
 	return (b % l) * h + (b / l);
 }
 
+
 int main() {
+
+	decTo256(144);
+
 	char * inputfn = "./images-test/media.tga";
 	char * outputfn = "./images-test/media2.tga";
 	
@@ -123,3 +142,4 @@ int main() {
   	
   	return 0;
 }
+

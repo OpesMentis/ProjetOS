@@ -22,7 +22,7 @@ void transforme_image(char * argtab[]);
 char *arg_envoi0;
 char *arg_envoi1;
 
-int main(int argc, char * argv[])
+int main2(int argc, char * argv[])
 {
   int socket_RV, socket_service, socket_talk, socket_RV_talk;
   int pidFils;

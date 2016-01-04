@@ -67,7 +67,7 @@ void print_list(list data) {
 	}
 }
 
-int main() {
+int main2() {
 	char * path = "./images-test/";
 	
 	list * data = malloc(sizeof(list));

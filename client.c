@@ -17,7 +17,7 @@
 void write_header(int sock, char * username);
 void print_msg(char * chat);
 void recv_img(int sock, long img_size);
-int main(int argc, char * argv[])
+int main2(int argc, char * argv[])
 {
   int sock;
   int sock_talk;
