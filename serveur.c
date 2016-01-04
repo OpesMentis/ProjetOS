@@ -92,7 +92,7 @@ int main(int argc, char * argv[])
   }
   // Ecoute
   if (listen(socket_RV_talk,1)==-1) {
-    perror("Impossible d'ecouter");
+    perror("Impossibœle d'ecouter");
     exit(1);
   }
   socket_talk=accept(socket_RV_talk, (struct sockaddr *)&adresse, &lgadresse);
@@ -134,6 +134,7 @@ int main(int argc, char * argv[])
      		printf( "arg_envoi1 : %s\n", arg_envoi1 );
      		
 			send_img(socket_service);
+			
 		}	
 		
 		else if (startswith("liste", chat)) {
@@ -144,7 +145,8 @@ int main(int argc, char * argv[])
 	
 			*data = acqui_info(path);
 	
-			print_list(*data);
+			print_list(*data, socket_service);
+			
 			
 			
 			/*do
@@ -173,6 +175,32 @@ int main(int argc, char * argv[])
   return 0;
 }
 
+void print_list(list data, int socket_service) {
+	struct node cur = data.rac;
+	int i;
+	int fd;
+	char BufferSend[10000];
+	int taille=0;
+	for (i = 0 ; i < data.nb_elt ; i++) {
+	
+		fd = open(cur.name_file, O_RDONLY);
+  		long img_size = lseek(fd, 0L, SEEK_END);
+  		lseek(fd, 0L, SEEK_SET);
+ 		close(fd);
+ 		
+ 		strcpy(BufferSend," =D <3");
+		taille=sizeof(BufferSend);
+ 		write(socket_service, &taille, sizeof(int)); 
+ 		write(socket_service, &BufferSend, taille); 
+		printf("Chemin : C%s\n", cur.name_file);
+		printf("hauteur : %i\n", cur.hauteur);
+		printf("largeur : %i\n", cur.largeur);
+		printf("taille de l'image : %ld octets\n\n", img_size);
+		if (i + 1 < data.nb_elt) {
+			cur = *cur.next;
+		}
+	}
+}
 
 void send_img(int socket_service) {
   int written_size;

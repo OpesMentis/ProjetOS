@@ -20,6 +20,7 @@ void recv_img(int sock, long img_size);
 int main(int argc, char * argv[])
 {
   int sock;
+  char sock2;
   int sock_talk;
   int port;
   int port_talk = 1111;
@@ -85,6 +86,7 @@ int main(int argc, char * argv[])
   printf("Connexion au talk etablie\n");
 
   char c;
+  char f = 'X';
   char *chat =  malloc(MAXTEXT);
   char *begchat = chat;
   char img_name;
@@ -93,6 +95,8 @@ int main(int argc, char * argv[])
   int j;
   char commande[256];
   char *msgclient = malloc(MAXTEXT);
+  char BufferRcv[10000];
+  int taille = 0;
   /* Le premier message ecrit le nom de l'utilisateur */
   write_header(sock_talk, username);
   while (c!=EOF) {
@@ -128,7 +132,31 @@ int main(int argc, char * argv[])
 	  printf("Taille de l'image a recevoir : %ld\n", img_size);
 	  recv_img(sock, img_size);
 	}
-	if (startswith("transforme", msgclient)) {
+	
+	else if (startswith("liste", msgclient)) {
+	 
+	 read(sock,&taille,sizeof(int));//On receptionne la taille
+	 read(sock, &BufferRcv, taille);//Puis la chaine de caractère
+	 printf("message recu : ");
+	 puts(BufferRcv);//On affiche la chaine de caractere
+	 memset(BufferRcv,0,sizeof(BufferRcv));//On réinitialise la chaine
+	 
+	 /* printf("Dans mon répertoire : \n");
+	  printf("encoreavant");
+	  char *file_name =  (char*)malloc(MAXTEXT);
+	  printf("avant");
+	  read(sock_talk, &f, 1);
+	  printf("après");
+	  printf("blop-1 len : %d\n", strlen(f));
+	  
+	  *file_name = f;
+	  printf("blop0 : %s\n", file_name);
+	  printf("blop0 len : %d\n", strlen(file_name));
+	  file_name++;	
+	  printf("blop1 len : %d\n", strlen(file_name));*/
+	}
+	
+	else if (startswith("transforme", msgclient)) {
 	  printf("Je transforme une image : %s\n", msgclient);
 	}
 

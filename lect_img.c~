@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <fcntl.h>
 #include "lect_img.h"
 
 list acqui_info(char * path) {
@@ -64,14 +65,12 @@ void print_list(list data) {
 		fd = open(cur.name_file, O_RDONLY);
   		long img_size = lseek(fd, 0L, SEEK_END);
   		lseek(fd, 0L, SEEK_SET);
-  		char *buffer = malloc(img_size);
- 		int readinfile = read(fd, buffer, img_size);
  		close(fd);
  		
-		printf("%s\n", cur.name_file);
+		printf("Chemin : C%s\n", cur.name_file);
 		printf("hauteur : %i\n", cur.hauteur);
-		printf("largeur : %i\n\n", cur.largeur);
-		printf("Taille de l'image : %ld\n", img_size);
+		printf("largeur : %i\n", cur.largeur);
+		printf("Taille de l'image : %ld octets\n\n", img_size);
 		if (i + 1 < data.nb_elt) {
 			cur = *cur.next;
 		}

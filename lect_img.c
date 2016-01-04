@@ -56,7 +56,7 @@ void add_node(char * addr, list * data) {
 	(*data).nb_elt += 1;
 }
 
-void print_list(list data) {
+/*void print_list(list data) {
 	struct node cur = data.rac;
 	int i;
 	int fd;
@@ -65,19 +65,17 @@ void print_list(list data) {
 		fd = open(cur.name_file, O_RDONLY);
   		long img_size = lseek(fd, 0L, SEEK_END);
   		lseek(fd, 0L, SEEK_SET);
-  		char *buffer = malloc(img_size);
- 		int readinfile = read(fd, buffer, img_size);
  		close(fd);
  		
-		printf("%s\n", cur.name_file);
+		printf("Chemin : C%s\n", cur.name_file);
 		printf("hauteur : %i\n", cur.hauteur);
-		printf("largeur : %i\n\n", cur.largeur);
-		printf("Taille de l'image : %ld\n", img_size);
+		printf("largeur : %i\n", cur.largeur);
+		printf("taille de l'image : %ld octets\n\n", img_size);
 		if (i + 1 < data.nb_elt) {
 			cur = *cur.next;
 		}
 	}
-}
+}*/
 
 /*int main() {
 	char * path = "./images-test/";

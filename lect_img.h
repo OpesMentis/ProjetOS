@@ -28,4 +28,4 @@ typedef struct list {
 
 list acqui_info(char * path);
 void add_node(char * addr, list * data);
-void print_list(list data);
+//void print_list(list data);
