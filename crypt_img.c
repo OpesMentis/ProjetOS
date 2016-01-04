@@ -59,17 +59,58 @@ int x_image_cesar(image_desc i_img, image_desc *p_img) {
     return 1;
 }
 
+// algo de Vigenere
+int image_vignr(image_desc i_img, image_desc *p_img) {
+	uint16_t planeSize;
+	
+	int cle[] = {217, 194, 49, 37, 49, 78, 212, 75, 29, 121, 100, 21, 8, 255};
+	int len = sizeof(cle) / sizeof(int); // ca marche. c'est sale mais ca marche.
+	int i = 0;
+	planeSize = mallocImageContent(p_img, i_img.width, i_img.height);
+
+	if (planeSize == 0) return 0;
+	
+	for (i=0; i<(i_img.width) * (i_img.height); i++) {
+	    (p_img->pBlue)[i] = ((i_img.pBlue)[i] + i * cle[i % len]) % 256;
+	    (p_img->pGreen)[i] = ((i_img.pGreen)[i] + i * cle[i % len]) % 256;
+		(p_img->pRed)[i] = ((i_img.pRed)[i] + i * cle[i % len]) % 256;
+	}
+    
+    return 1;
+}
+
+// dechiffre l'algo de Vigenere
+int x_image_vignr(image_desc i_img, image_desc *p_img) {
+	uint16_t planeSize;
+	
+	int cle[] = {217, 194, 49, 37, 49, 78, 212, 75, 29, 121, 100, 21, 8, 255};
+	int len = sizeof(cle) / sizeof(int); // ca marche. c'est sale mais ca marche.
+	int i = 0;
+	planeSize = mallocImageContent(p_img, i_img.width, i_img.height);
+
+	if (planeSize == 0) return 0;
+	
+	for (i=0; i<(i_img.width) * (i_img.height); i++) {
+	    (p_img->pBlue)[i] = ((i_img.pBlue)[i] - i * cle[i % len]) % 256;
+	    (p_img->pGreen)[i] = ((i_img.pGreen)[i] - i * cle[i % len]) % 256;
+		(p_img->pRed)[i] = ((i_img.pRed)[i] - i * cle[i % len]) % 256;
+	}
+    
+    return 1;
+}
+
 int tp(int a, int h, int l) {
-	return (a % h) * l + (a / h);
+	return (a % h) * l + (a / h);  // /storage/emulated/0/ImageConverter
 }
 
 int x_tp(int b, int h, int l) {
 	return (b % l) * h + (b / l);
 }
 
+/*
 int main() {
-	char * inputfn = "./images-test/pin2.tga";
-	char * outputfn = "./images-test/pin3.tga";
+	char * inputfn = "./images-test/media.tga";
+	char * outputfn = "./images-test/media2.tga";
 	
 	image_desc i_img, o_img;
   	targa_header i_head;
@@ -83,3 +124,5 @@ int main() {
   	
   	return 0;
 }
+
+*/

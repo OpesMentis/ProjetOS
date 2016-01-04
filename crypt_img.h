@@ -28,6 +28,8 @@ typedef struct targa_header_ {
 int image_clone(image_desc i_img, image_desc *p_img);
 int image_cesar(image_desc i_img, image_desc *p_img);
 int x_image_cesar(image_desc i_img, image_desc *p_img);
+int image_vignr(image_desc i_img, image_desc *p_img);
+int x_image_vignr(image_desc i_img, image_desc *p_img);
 int tp(int a, int h, int l);
 int x_tp(int b, int h, int l);
 

@@ -67,7 +67,6 @@ void print_list(list data) {
 	}
 }
 
-/*
 int main() {
 	char * path = "./images-test/";
 	
@@ -79,5 +78,3 @@ int main() {
 	
 	return 1;
 }
-
-*/

@@ -1,3 +1,6 @@
+#ifndef _STRHELPERSH_
+#define _STRHELPERSH_
+
 /**
  * Helpers for manipulating strings.
  */
@@ -22,3 +25,5 @@ int str_split(char * string, char * argtab[]);
    are null.
 */
 int startswith(char *prefix, char*str);
+
+#endif
