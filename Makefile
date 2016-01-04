@@ -4,11 +4,17 @@ all : application
 # Test : dep with .h versus dep with .c
 
 
-application : strhelpers.o serveur.o client.o
-	gcc strhelpers.o serveur.o -o enstaserveur
+application : strhelpers.o serveur.o client.o lect_img.o
+	gcc strhelpers.o serveur.o lect_img.o mem_targa.o -o enstaserveur
 	gcc strhelpers.o client.o -o enstaclient
 
-serveur.o : serveur.c  strhelpers.h 
+mem_targa.o : mem_targa.c mem_targa.h 
+	gcc -g -Wall -c mem_targa.c -o mem_targa.o
+	
+lect_img.o : lect_img.c mem_targa.h 
+	gcc -g -Wall -c lect_img.c -o lect_img.o
+	
+serveur.o : serveur.c  strhelpers.h lect_img.c mem_targa.h 
 	gcc -c serveur.c -o serveur.o
 
 client.o : client.c strhelpers.h 

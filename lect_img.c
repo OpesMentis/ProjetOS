@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <fcntl.h>
 #include "lect_img.h"
 
 list acqui_info(char * path) {
@@ -46,6 +47,7 @@ void add_node(char * addr, list * data) {
 		struct node * cur = &(*data).rac;
 		
 		int i;
+		
 		for (i = 1; i < (*data).nb_elt; i++) {
 			cur = (*cur).next;
 		}
@@ -57,17 +59,27 @@ void add_node(char * addr, list * data) {
 void print_list(list data) {
 	struct node cur = data.rac;
 	int i;
+	int fd;
 	for (i = 0 ; i < data.nb_elt ; i++) {
+	
+		fd = open(cur.name_file, O_RDONLY);
+  		long img_size = lseek(fd, 0L, SEEK_END);
+  		lseek(fd, 0L, SEEK_SET);
+  		char *buffer = malloc(img_size);
+ 		int readinfile = read(fd, buffer, img_size);
+ 		close(fd);
+ 		
 		printf("%s\n", cur.name_file);
-		printf("%i\n", cur.hauteur);
-		printf("%i\n\n", cur.largeur);
+		printf("hauteur : %i\n", cur.hauteur);
+		printf("largeur : %i\n\n", cur.largeur);
+		printf("Taille de l'image : %ld\n", img_size);
 		if (i + 1 < data.nb_elt) {
 			cur = *cur.next;
 		}
 	}
 }
 
-int main() {
+/*int main() {
 	char * path = "./images-test/";
 	
 	list * data = malloc(sizeof(list));
@@ -77,4 +89,4 @@ int main() {
 	print_list(*data);
 	
 	return 1;
-}
+}*/

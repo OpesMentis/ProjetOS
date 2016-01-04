@@ -11,6 +11,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include "strhelpers.h"
+#include "lect_img.h"
 
 #define MAXNAME 10
 #define MAXTEXT 100
@@ -137,31 +138,23 @@ int main(int argc, char * argv[])
 		
 		else if (startswith("liste", chat)) {
 			
-			struct dirent *lecture;
-   			DIR *rep;
-    		rep = opendir("input" );
-    		printf("\n Images targa dossier entrée :\n");
-    		while ((lecture = readdir(rep))) {
-     		char *dot = strrchr(lecture->d_name, '.');
-      		if (dot && !strcmp(dot, ".tga"))
-        		printf("%s\n", lecture->d_name);
-    		}
-    		rep = opendir("output" );
-    		printf("\n Images targa dossier sortie :\n");
-    		while ((lecture = readdir(rep))) {
-     		char *dot = strrchr(lecture->d_name, '.');
-	  		if (dot && !strcmp(dot, ".tga"))
-        		printf("%s\n", lecture->d_name);
-    		}
-    	closedir(rep);
+			char * path = "./images-test/";
+	
+			list * data = malloc(sizeof(list));
+	
+			*data = acqui_info(path);
+	
+			print_list(*data);
+			
+			
 			/*do
 			{
 				cwrite=getchar();
 				write(socket_talk, &cwrite, 1);
 			}
-			while (cwrite!='\n'); */
+			while (cwrite!='\n'); 
+		}*/
 		}
-		
 		else if (startswith("info", chat)) {
 		printf("Je vais t'envoyer des infos\n");
 			/*do
@@ -181,10 +174,9 @@ int main(int argc, char * argv[])
 }
 
 
-
 void send_img(int socket_service) {
   int written_size;
-  char *chemin0 = "./input/";   
+  char *chemin0 = "./images-test/";   
   char *chemin = malloc(strlen(chemin0)+strlen(arg_envoi1)+1);//+1 for the zero-terminator
     //in real code you would check for errors in malloc here
     strcpy(chemin, chemin0);

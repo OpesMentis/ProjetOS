@@ -122,9 +122,7 @@ int main(int argc, char * argv[])
    //walk through other tokens 
    token = strtok(NULL, s);
    printf( " %s\n", token );*/
-   
-	  printf("nom image : ");
-       
+  
 	  printf("Je vais recevoir une image\n");
 	  read(sock, &img_size, sizeof(long));
 	  printf("Taille de l'image a recevoir : %ld\n", img_size);
@@ -155,7 +153,7 @@ void recv_img(int sock, long img_size) {
 
   buffer = startbuffer;
   printf("Copie terminee : lu %d octets , \n", total);
-  int fd = open("./output/ensta2.tga", O_CREAT|O_RDWR);
+  int fd = open("./output/tasoeur.tga", O_CREAT|O_RDWR);
   write(fd, buffer, img_size); 
   close(fd);
   free(buffer);
