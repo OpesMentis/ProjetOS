@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <fcntl.h>
 #include "lect_img.h"
 
 list acqui_info(char * path) {
@@ -46,6 +47,7 @@ void add_node(char * addr, list * data) {
 		struct node * cur = &(*data).rac;
 		
 		int i;
+		
 		for (i = 1; i < (*data).nb_elt; i++) {
 			cur = (*cur).next;
 		}
@@ -54,20 +56,65 @@ void add_node(char * addr, list * data) {
 	(*data).nb_elt += 1;
 }
 
-void print_list(list data) {
+int calcsize(int a) {
+  if (a < 10)
+	return 1;
+  else if (a > 10 && a < 100)
+  	return 2;
+  else if (a > 100 && a < 1000)
+  	return 3;
+  else if (a > 1000 && a < 10000)
+  	return 4;
+  else if (a > 10000 && a < 100000)
+  	return 5;
+  else if (a > 100000 && a < 1000000)
+    return 6;
+  else if (a > 1000000 && a < 10000000)
+  	return 7;
+  else if (a > 10000000 && a < 100000000)
+  	return 8;
+  else if (a > 100000000 && a < 1000000000)
+  	return 9;
+  else if (a > 1000000000 && a < 10000000000)
+  	return 10;
+} 
+
+void print_espace(int sizecompare, int size) {
+  int espace;
+  int i;
+  espace = sizecompare - size;
+  for (i = 0; i < espace; i++) {
+    printf(" ");  
+  }
+}
+
+
+/*void print_list(list data) {
 	struct node cur = data.rac;
 	int i;
+	int fd;
 	for (i = 0 ; i < data.nb_elt ; i++) {
-		printf("%s\n", cur.name_file);
-		printf("%i\n", cur.hauteur);
-		printf("%i\n\n", cur.largeur);
+	
+		fd = open(cur.name_file, O_RDONLY);
+  		long img_size = lseek(fd, 0L, SEEK_END);
+  		lseek(fd, 0L, SEEK_SET);
+ 		close(fd);
+ 		
+		printf("Chemin : C%s\n", cur.name_file);
+		printf("hauteur : %i\n", cur.hauteur);
+		printf("largeur : %i\n", cur.largeur);
+		printf("taille de l'image : %ld octets\n\n", img_size);
 		if (i + 1 < data.nb_elt) {
 			cur = *cur.next;
 		}
 	}
-}
+}*/
 
+<<<<<<< HEAD
 int main2() {
+=======
+/*int main() {
+>>>>>>> d63d1275f14fafa875dc68f213106c5aeb02620f
 	char * path = "./images-test/";
 	
 	list * data = malloc(sizeof(list));
@@ -77,4 +124,4 @@ int main2() {
 	print_list(*data);
 	
 	return 1;
-}
+}*/

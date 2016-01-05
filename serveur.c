@@ -11,6 +11,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include "strhelpers.h"
+#include "lect_img.h"
 
 #define MAXNAME 10
 #define MAXTEXT 100
@@ -22,8 +23,12 @@ void transforme_image(char * argtab[]);
 char *arg_envoi0;
 char *arg_envoi1;
 
+<<<<<<< HEAD
 int main2(int argc, char * argv[])
 {
+=======
+int main(int argc, char * argv[]) {
+>>>>>>> d63d1275f14fafa875dc68f213106c5aeb02620f
   int socket_RV, socket_service, socket_talk, socket_RV_talk;
   int pidFils;
   int port;
@@ -91,7 +96,7 @@ int main2(int argc, char * argv[])
   }
   // Ecoute
   if (listen(socket_RV_talk,1)==-1) {
-    perror("Impossible d'ecouter");
+    perror("Impossibœle d'ecouter");
     exit(1);
   }
   socket_talk=accept(socket_RV_talk, (struct sockaddr *)&adresse, &lgadresse);
@@ -122,46 +127,43 @@ int main2(int argc, char * argv[])
 		print_msg(talker, chat);
 
 		if (startswith("envoie",chat)) {
-			printf("Je vais t'envoyer une image\n");
+			printf("Envoi image : ");
 			
      		const char s[2] = " ";
      		const char s2[3] = "\n";
     		arg_envoi0 = strtok(chat, s);
-    		printf( "arg_envoi0 : %s\n", arg_envoi0 );
+    		//printf( "arg_envoi0 : %s\n", arg_envoi0 );
+     		printf("ici");
      		arg_envoi1 = strtok(NULL, s);
+     		printf("la");
      		arg_envoi1 = strtok(arg_envoi1, s2);
-     		printf( "arg_envoi1 : %s\n", arg_envoi1 );
+     		printf("ailleurs");
+     		printf( "%s\n", arg_envoi1 );
      		
 			send_img(socket_service);
+			
 		}	
 		
-		else if (startswith("liste", chat)) {
+		else if (startswith("ls", chat)) {
 			
-			struct dirent *lecture;
-   			DIR *rep;
-    		rep = opendir("input" );
-    		printf("\n Images targa dossier entrée :\n");
-    		while ((lecture = readdir(rep))) {
-     		char *dot = strrchr(lecture->d_name, '.');
-      		if (dot && !strcmp(dot, ".tga"))
-        		printf("%s\n", lecture->d_name);
-    		}
-    		rep = opendir("output" );
-    		printf("\n Images targa dossier sortie :\n");
-    		while ((lecture = readdir(rep))) {
-     		char *dot = strrchr(lecture->d_name, '.');
-	  		if (dot && !strcmp(dot, ".tga"))
-        		printf("%s\n", lecture->d_name);
-    		}
-    	closedir(rep);
+			char * path = "./images-test/";
+	
+			list * data = malloc(sizeof(list));
+	
+			*data = acqui_info(path);
+	
+			send_list(*data, socket_service, socket_talk);
+			
+			
+			
 			/*do
 			{
 				cwrite=getchar();
 				write(socket_talk, &cwrite, 1);
 			}
-			while (cwrite!='\n'); */
+			while (cwrite!='\n'); 
+		}*/
 		}
-		
 		else if (startswith("info", chat)) {
 		printf("Je vais t'envoyer des infos\n");
 			/*do
@@ -179,12 +181,50 @@ int main2(int argc, char * argv[])
   close(socket_talk);	  
   return 0;
 }
+ 
+void send_list(list data, int socket_service, int socket_talk) {
+	struct node cur = data.rac;
+	int i;
+	int fd;
+	char BufferSend[10000];
+	int taille=0;
+	//printf("data nb elem : %d\n", data.nb_elt);
+	
+	write(socket_service, &data.nb_elt, sizeof(int));
+	
+	for (i = 0 ; i < data.nb_elt ; i++) {
+		
+		fd = open(cur.name_file, O_RDONLY);
+  		long img_size = lseek(fd, 0L, SEEK_END);
+  		lseek(fd, 0L, SEEK_SET);
+ 		close(fd);
+ 		
+ 		//strcpy(BufferSend," =D <3");
+ 		
+ 		strcpy(BufferSend,cur.name_file);
 
-
+        taille=sizeof(BufferSend);
+        write(socket_service,&taille,sizeof(int));
+        write(socket_service,&BufferSend,taille);	
+        memset(BufferSend,0,sizeof(BufferSend));
+ 		//printf("Chemin : %s\n", cur.name_file);
+ 		write(socket_service, &cur.hauteur, sizeof(int));
+		//printf("hauteur : %i\n", cur.hauteur);
+		write(socket_service, &cur.largeur, sizeof(int));
+		//printf("largeur : %i\n", cur.largeur);
+		write(socket_service, &img_size, sizeof(int));
+		//printf("taille de l'image : %ld octets\n\n", img_size);
+		
+		if (i + 1 < data.nb_elt) {
+			cur = *cur.next;
+		}
+	}
+	printf("Infos envoyées\n");
+}
 
 void send_img(int socket_service) {
   int written_size;
-  char *chemin0 = "./input/";   
+  char *chemin0 = "./images-test/";   
   char *chemin = malloc(strlen(chemin0)+strlen(arg_envoi1)+1);//+1 for the zero-terminator
     //in real code you would check for errors in malloc here
     strcpy(chemin, chemin0);

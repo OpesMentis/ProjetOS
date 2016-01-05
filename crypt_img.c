@@ -30,7 +30,6 @@ int * decTo256(int n) {
 	
 	for (i = 0; i < L; i++) {
 		nb[L-i-1] = n % 256;
-		printf("%i\n", nb[L-i-1]);
 		n /= 256;
 	}
 	return nb;
@@ -38,10 +37,9 @@ int * decTo256(int n) {
 	
 
 // chiffre avec un algo de Cesar un peu tuned
-int image_cesar(image_desc i_img, image_desc *p_img) {
+int image_cesar(image_desc i_img, image_desc *p_img, int cle) {
 	uint16_t planeSize;
 	
-	int cle = 217;
 	int i = 0;
 	planeSize = mallocImageContent(p_img, i_img.width, i_img.height);
 
@@ -57,10 +55,9 @@ int image_cesar(image_desc i_img, image_desc *p_img) {
 }
 
 // dechiffre l'algo de Cesar
-int x_image_cesar(image_desc i_img, image_desc *p_img) {
+int x_image_cesar(image_desc i_img, image_desc *p_img, int cle) {
 	uint16_t planeSize;
 	
-	int cle = 217;
 	int i = 0;
 	planeSize = mallocImageContent(p_img, i_img.width, i_img.height);
 
@@ -76,10 +73,11 @@ int x_image_cesar(image_desc i_img, image_desc *p_img) {
 }
 
 // algo de Vigenere
-int image_vignr(image_desc i_img, image_desc *p_img) {
+int image_vignr(image_desc i_img, image_desc *p_img, long cle0) {
 	uint16_t planeSize;
 	
-	int cle[] = {217, 194, 49, 37, 49, 78, 212, 75, 29, 121, 100, 21, 8, 255};
+	int * cle = decTo256(cle0);
+	
 	int len = sizeof(cle) / sizeof(int); // ca marche. c'est sale mais ca marche.
 	int i = 0;
 	planeSize = mallocImageContent(p_img, i_img.width, i_img.height);
@@ -96,10 +94,11 @@ int image_vignr(image_desc i_img, image_desc *p_img) {
 }
 
 // dechiffre l'algo de Vigenere
-int x_image_vignr(image_desc i_img, image_desc *p_img) {
+int x_image_vignr(image_desc i_img, image_desc *p_img, long cle0) {
 	uint16_t planeSize;
 	
-	int cle[] = {217, 194, 49, 37, 49, 78, 212, 75, 29, 121, 100, 21, 8, 255};
+	int * cle = decTo256(cle0);
+	
 	int len = sizeof(cle) / sizeof(int); // ca marche. c'est sale mais ca marche.
 	int i = 0;
 	planeSize = mallocImageContent(p_img, i_img.width, i_img.height);
@@ -126,17 +125,15 @@ int x_tp(int b, int h, int l) {
 
 int main() {
 
-	decTo256(144);
-
-	char * inputfn = "./images-test/media.tga";
-	char * outputfn = "./images-test/media2.tga";
+	char * inputfn = "./images-test/selfie2.tga";
+	char * outputfn = "./images-test/selfie3.tga";
 	
 	image_desc i_img, o_img;
   	targa_header i_head;
 
 	readImage(&i_img, &i_head, inputfn);
 	
-	x_image_cesar(i_img, &o_img);
+	x_image_vignr(i_img, &o_img, 65456546416);
 	
 	writeImage(o_img, i_head, outputfn);
   	freeImage(&o_img);

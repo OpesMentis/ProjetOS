@@ -10,7 +10,11 @@
 #include <signal.h>
 #include <string.h>
 #include <fcntl.h>
+#include <math.h>
 #include "strhelpers.h"
+#include "lect_img.h"
+#include "client.h"
+
 #define MAXTEXT 1024
 
 // Definition des prototypes de fonctions appelees dans le fichier
@@ -20,6 +24,7 @@ void recv_img(int sock, long img_size);
 int main2(int argc, char * argv[])
 {
   int sock;
+  char sock2;
   int sock_talk;
   int port;
   int port_talk = 1111;
@@ -85,6 +90,7 @@ int main2(int argc, char * argv[])
   printf("Connexion au talk etablie\n");
 
   char c;
+  char f = 'X';
   char *chat =  malloc(MAXTEXT);
   char *begchat = chat;
   char img_name;
@@ -93,6 +99,10 @@ int main2(int argc, char * argv[])
   int j;
   char commande[256];
   char *msgclient = malloc(MAXTEXT);
+  char BufferRcv[10000];
+  int taille = 0;
+  int tailleListe = 0;
+  
   /* Le premier message ecrit le nom de l'utilisateur */
   write_header(sock_talk, username);
   while (c!=EOF) {
@@ -122,24 +132,66 @@ int main2(int argc, char * argv[])
    //walk through other tokens 
    token = strtok(NULL, s);
    printf( " %s\n", token );*/
-   
-	  printf("nom image : ");
-       
+  
 	  printf("Je vais recevoir une image\n");
 	  read(sock, &img_size, sizeof(long));
 	  printf("Taille de l'image a recevoir : %ld\n", img_size);
 	  recv_img(sock, img_size);
 	}
-	if (startswith("transforme", msgclient)) {
-	  printf("Je transforme une image : %s\n", msgclient);
+	
+	else if (startswith("ls-elo", msgclient)) {
+	  int flag = 1;	
+	  while (flag == 1) {
+	    printf("<3");
+	  }
 	}
-
+	
+	else if (startswith("ls", msgclient)) {
+	  
+	  tailleListe = 0;
+	  read(sock, &tailleListe,sizeof(int));
+	  printf("tailleListe : %d\n\n", tailleListe);
+	  printf(" ------ chemin image ------- hauteur - largeur - taille en octets\n");
+	  for (i = 0 ; i < tailleListe ; i++) {
+	    taille = 0;
+	    
+	    memset(BufferRcv,0,sizeof(BufferRcv));
+   	    read(sock,&taille,sizeof(int));
+   	    read(sock, &BufferRcv, taille);
+        //printf("%i\n", taille);
+        printf("%s", BufferRcv);
+        print_espace(strlen(" ------ chemin image ------- "), strlen(BufferRcv));
+        // puts(BufferRcv); //plus utile
+       
+        	    
+	    taille = 0;
+	    read(sock,&taille,sizeof(int));//On receptionne la hauteur
+	    printf("%d", taille);//On affiche la chaine de caractere
+	    print_espace(strlen("hauteur -"), calcsize(taille));
+	    //printf("\n%i\n", calcsize(taille));
+	    
+	    taille = 0;
+	    read(sock,&taille,sizeof(int));//On receptionne la largeur
+	    printf(" %d", taille);//On affiche la chaine de caractere
+	    print_espace(strlen("largeur -"), calcsize(taille));
+	  
+	    taille = 0;
+	    read(sock,&taille,sizeof(int));//On receptionne la taille en octets
+	    printf(" %d\n", taille);//On affiche la chaine de caractere
+	    // memset(BufferRcv,0,sizeof(BufferRcv));//On réinitialise la chaine
+	  } 
+	}
+	
+	else if (startswith("transforme", msgclient)) {
+	  printf("Je transforme une image : %s\n", msgclient);
+	
+	
+	}
   }	
   close(sock);
   close(sock_talk);	   
   return 0;
 }
-
 
 void recv_img(int sock, long img_size) {
   char *buffer = malloc(img_size);
@@ -155,7 +207,7 @@ void recv_img(int sock, long img_size) {
 
   buffer = startbuffer;
   printf("Copie terminee : lu %d octets , \n", total);
-  int fd = open("./output/ensta2.tga", O_CREAT|O_RDWR);
+  int fd = open("./output/tasoeur.tga", O_CREAT|O_RDWR);
   write(fd, buffer, img_size); 
   close(fd);
   free(buffer);
