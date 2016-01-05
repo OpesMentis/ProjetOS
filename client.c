@@ -97,6 +97,8 @@ int main(int argc, char * argv[])
   char *msgclient = malloc(MAXTEXT);
   char BufferRcv[10000];
   int taille = 0;
+  int tailleListe = 0;
+  
   /* Le premier message ecrit le nom de l'utilisateur */
   write_header(sock_talk, username);
   while (c!=EOF) {
@@ -133,33 +135,42 @@ int main(int argc, char * argv[])
 	  recv_img(sock, img_size);
 	}
 	
-	else if (startswith("liste", msgclient)) {
-	 
-	 read(sock,&taille,sizeof(int));//On receptionne la taille
-	 read(sock, &BufferRcv, taille);//Puis la chaine de caractère
-	 printf("message recu : ");
-	 puts(BufferRcv);//On affiche la chaine de caractere
-	 memset(BufferRcv,0,sizeof(BufferRcv));//On réinitialise la chaine
-	 
-	 /* printf("Dans mon répertoire : \n");
-	  printf("encoreavant");
-	  char *file_name =  (char*)malloc(MAXTEXT);
-	  printf("avant");
-	  read(sock_talk, &f, 1);
-	  printf("après");
-	  printf("blop-1 len : %d\n", strlen(f));
+	else if (startswith("ls", msgclient)) {
+	  printf("Je vais recevoir une liste\n");
+	  tailleListe = 0;
+	  read(sock, &tailleListe,sizeof(int));
+	  printf("tailleListe : %d\n\n", tailleListe);
 	  
-	  *file_name = f;
-	  printf("blop0 : %s\n", file_name);
-	  printf("blop0 len : %d\n", strlen(file_name));
-	  file_name++;	
-	  printf("blop1 len : %d\n", strlen(file_name));*/
+	  for (i = 0 ; i < tailleListe ; i++) {
+	    taille = 0;
+	  
+   	    read(sock,&taille,sizeof(int));
+   	    
+        read(sock, &BufferRcv, taille);
+        printf("\nchemin : %s\n", BufferRcv);
+        // puts(BufferRcv); //plus utile
+        memset(BufferRcv,0,sizeof(BufferRcv));
+        	    
+	    taille = 0;
+	    read(sock,&taille,sizeof(int));//On receptionne la hauteur
+	    printf("hauteur : %d\n", taille);//On affiche la chaine de caractere
+	    
+	    taille = 0;
+	    read(sock,&taille,sizeof(int));//On receptionne la hauteur
+	    printf("largeur : %d\n", taille);//On affiche la chaine de caractere
+	  
+	    taille = 0;
+	    read(sock,&taille,sizeof(int));//On receptionne la hauteur
+	    printf("taille : %d octets\n", taille);//On affiche la chaine de caractere
+	    // memset(BufferRcv,0,sizeof(BufferRcv));//On réinitialise la chaine
+	  } 
 	}
 	
 	else if (startswith("transforme", msgclient)) {
 	  printf("Je transforme une image : %s\n", msgclient);
+	
+	
 	}
-
   }	
   close(sock);
   close(sock_talk);	   

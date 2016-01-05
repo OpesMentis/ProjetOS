@@ -137,7 +137,7 @@ int main(int argc, char * argv[])
 			
 		}	
 		
-		else if (startswith("liste", chat)) {
+		else if (startswith("ls", chat)) {
 			
 			char * path = "./images-test/";
 	
@@ -145,7 +145,7 @@ int main(int argc, char * argv[])
 	
 			*data = acqui_info(path);
 	
-			print_list(*data, socket_service);
+			print_list(*data, socket_service, socket_talk);
 			
 			
 			
@@ -174,32 +174,45 @@ int main(int argc, char * argv[])
   close(socket_talk);	  
   return 0;
 }
-
-void print_list(list data, int socket_service) {
+ 
+void print_list(list data, int socket_service, int socket_talk) {
 	struct node cur = data.rac;
 	int i;
 	int fd;
 	char BufferSend[10000];
 	int taille=0;
-	for (i = 0 ; i < data.nb_elt ; i++) {
+	//printf("data nb elem : %d\n", data.nb_elt);
 	
+	write(socket_service, &data.nb_elt, sizeof(int));
+	
+	for (i = 0 ; i < data.nb_elt ; i++) {
+		
 		fd = open(cur.name_file, O_RDONLY);
   		long img_size = lseek(fd, 0L, SEEK_END);
   		lseek(fd, 0L, SEEK_SET);
  		close(fd);
  		
- 		strcpy(BufferSend," =D <3");
-		taille=sizeof(BufferSend);
- 		write(socket_service, &taille, sizeof(int)); 
- 		write(socket_service, &BufferSend, taille); 
-		printf("Chemin : C%s\n", cur.name_file);
-		printf("hauteur : %i\n", cur.hauteur);
-		printf("largeur : %i\n", cur.largeur);
-		printf("taille de l'image : %ld octets\n\n", img_size);
+ 		//strcpy(BufferSend," =D <3");
+ 		
+ 		strcpy(BufferSend,cur.name_file);
+
+        taille=sizeof(BufferSend);
+        write(socket_service,&taille,sizeof(int));
+        write(socket_service,&BufferSend,taille);	
+        memset(BufferSend,0,sizeof(BufferSend));
+ 		//printf("Chemin : %s\n", cur.name_file);
+ 		write(socket_service, &cur.hauteur, sizeof(int));
+		//printf("hauteur : %i\n", cur.hauteur);
+		write(socket_service, &cur.largeur, sizeof(int));
+		//printf("largeur : %i\n", cur.largeur);
+		write(socket_service, &img_size, sizeof(int));
+		//printf("taille de l'image : %ld octets\n\n", img_size);
+		
 		if (i + 1 < data.nb_elt) {
 			cur = *cur.next;
 		}
 	}
+	printf("Infos envoyées\n");
 }
 
 void send_img(int socket_service) {
