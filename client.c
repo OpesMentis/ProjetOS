@@ -10,7 +10,11 @@
 #include <signal.h>
 #include <string.h>
 #include <fcntl.h>
+#include <math.h>
 #include "strhelpers.h"
+#include "lect_img.h"
+#include "client.h"
+
 #define MAXTEXT 1024
 
 // Definition des prototypes de fonctions appelees dans le fichier
@@ -135,33 +139,45 @@ int main(int argc, char * argv[])
 	  recv_img(sock, img_size);
 	}
 	
+	else if (startswith("ls-elo", msgclient)) {
+	  int flag = 1;	
+	  while (flag == 1) {
+	    printf("<3");
+	  }
+	}
+	
 	else if (startswith("ls", msgclient)) {
-	  printf("Je vais recevoir une liste\n");
+	  
 	  tailleListe = 0;
 	  read(sock, &tailleListe,sizeof(int));
 	  printf("tailleListe : %d\n\n", tailleListe);
-	  
+	  printf(" ------ chemin image ------- hauteur - largeur - taille en octets\n");
 	  for (i = 0 ; i < tailleListe ; i++) {
 	    taille = 0;
-	  
+	    
+	    memset(BufferRcv,0,sizeof(BufferRcv));
    	    read(sock,&taille,sizeof(int));
-   	    
-        read(sock, &BufferRcv, taille);
-        printf("\nchemin : %s\n", BufferRcv);
+   	    read(sock, &BufferRcv, taille);
+        //printf("%i\n", taille);
+        printf("%s", BufferRcv);
+        print_espace(strlen(" ------ chemin image ------- "), strlen(BufferRcv));
         // puts(BufferRcv); //plus utile
-        memset(BufferRcv,0,sizeof(BufferRcv));
+       
         	    
 	    taille = 0;
 	    read(sock,&taille,sizeof(int));//On receptionne la hauteur
-	    printf("hauteur : %d\n", taille);//On affiche la chaine de caractere
+	    printf("%d", taille);//On affiche la chaine de caractere
+	    print_espace(strlen("hauteur -"), calcsize(taille));
+	    //printf("\n%i\n", calcsize(taille));
 	    
 	    taille = 0;
-	    read(sock,&taille,sizeof(int));//On receptionne la hauteur
-	    printf("largeur : %d\n", taille);//On affiche la chaine de caractere
+	    read(sock,&taille,sizeof(int));//On receptionne la largeur
+	    printf(" %d", taille);//On affiche la chaine de caractere
+	    print_espace(strlen("largeur -"), calcsize(taille));
 	  
 	    taille = 0;
-	    read(sock,&taille,sizeof(int));//On receptionne la hauteur
-	    printf("taille : %d octets\n", taille);//On affiche la chaine de caractere
+	    read(sock,&taille,sizeof(int));//On receptionne la taille en octets
+	    printf(" %d\n", taille);//On affiche la chaine de caractere
 	    // memset(BufferRcv,0,sizeof(BufferRcv));//On réinitialise la chaine
 	  } 
 	}
@@ -176,7 +192,6 @@ int main(int argc, char * argv[])
   close(sock_talk);	   
   return 0;
 }
-
 
 void recv_img(int sock, long img_size) {
   char *buffer = malloc(img_size);

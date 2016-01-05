@@ -56,6 +56,39 @@ void add_node(char * addr, list * data) {
 	(*data).nb_elt += 1;
 }
 
+int calcsize(int a) {
+  if (a < 10)
+	return 1;
+  else if (a > 10 && a < 100)
+  	return 2;
+  else if (a > 100 && a < 1000)
+  	return 3;
+  else if (a > 1000 && a < 10000)
+  	return 4;
+  else if (a > 10000 && a < 100000)
+  	return 5;
+  else if (a > 100000 && a < 1000000)
+    return 6;
+  else if (a > 1000000 && a < 10000000)
+  	return 7;
+  else if (a > 10000000 && a < 100000000)
+  	return 8;
+  else if (a > 100000000 && a < 1000000000)
+  	return 9;
+  else if (a > 1000000000 && a < 10000000000)
+  	return 10;
+} 
+
+void print_espace(int sizecompare, int size) {
+  int espace;
+  int i;
+  espace = sizecompare - size;
+  for (i = 0; i < espace; i++) {
+    printf(" ");  
+  }
+}
+
+
 /*void print_list(list data) {
 	struct node cur = data.rac;
 	int i;

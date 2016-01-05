@@ -23,8 +23,7 @@ void transforme_image(char * argtab[]);
 char *arg_envoi0;
 char *arg_envoi1;
 
-int main(int argc, char * argv[])
-{
+int main(int argc, char * argv[]) {
   int socket_RV, socket_service, socket_talk, socket_RV_talk;
   int pidFils;
   int port;
@@ -123,15 +122,18 @@ int main(int argc, char * argv[])
 		print_msg(talker, chat);
 
 		if (startswith("envoie",chat)) {
-			printf("Je vais t'envoyer une image\n");
+			printf("Envoi image : ");
 			
      		const char s[2] = " ";
      		const char s2[3] = "\n";
     		arg_envoi0 = strtok(chat, s);
-    		printf( "arg_envoi0 : %s\n", arg_envoi0 );
+    		//printf( "arg_envoi0 : %s\n", arg_envoi0 );
+     		printf("ici");
      		arg_envoi1 = strtok(NULL, s);
+     		printf("la");
      		arg_envoi1 = strtok(arg_envoi1, s2);
-     		printf( "arg_envoi1 : %s\n", arg_envoi1 );
+     		printf("ailleurs");
+     		printf( "%s\n", arg_envoi1 );
      		
 			send_img(socket_service);
 			
@@ -145,7 +147,7 @@ int main(int argc, char * argv[])
 	
 			*data = acqui_info(path);
 	
-			print_list(*data, socket_service, socket_talk);
+			send_list(*data, socket_service, socket_talk);
 			
 			
 			
@@ -175,7 +177,7 @@ int main(int argc, char * argv[])
   return 0;
 }
  
-void print_list(list data, int socket_service, int socket_talk) {
+void send_list(list data, int socket_service, int socket_talk) {
 	struct node cur = data.rac;
 	int i;
 	int fd;
