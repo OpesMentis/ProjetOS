@@ -127,16 +127,17 @@ int main(int argc, char * argv[]) {
      		const char s[2] = " ";
      		const char s2[3] = "\n";
     		arg_envoi0 = strtok(chat, s);
-    		//printf( "arg_envoi0 : %s\n", arg_envoi0 );
+    		printf( "arg_envoi0 : %s\n", arg_envoi0 );
      		printf("ici");
      		arg_envoi1 = strtok(NULL, s);
      		printf("la");
      		arg_envoi1 = strtok(arg_envoi1, s2);
      		printf("ailleurs");
-     		printf( "%s\n", arg_envoi1 );
-     		
-			send_img(socket_service);
-			
+     		printf( "arg_envoi0 : %s\n", arg_envoi1 );
+     		if
+     		else{
+			  send_img(socket_service);
+			}
 		}	
 		
 		else if (startswith("ls", chat)) {
