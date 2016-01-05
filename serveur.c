@@ -23,6 +23,7 @@ void transforme_image(char * argtab[]);
 char *arg_envoi0;
 char *arg_envoi1;
 
+
 int main(int argc, char * argv[]) {
   int socket_RV, socket_service, socket_talk, socket_RV_talk;
   int pidFils;
@@ -134,10 +135,10 @@ int main(int argc, char * argv[]) {
      		arg_envoi1 = strtok(arg_envoi1, s2);
      		printf("ailleurs");
      		printf( "arg_envoi0 : %s\n", arg_envoi1 );
-     		if
+     		/*if
      		else{
 			  send_img(socket_service);
-			}
+			}*/
 		}	
 		
 		else if (startswith("ls", chat)) {

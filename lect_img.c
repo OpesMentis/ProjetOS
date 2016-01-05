@@ -110,7 +110,9 @@ void print_espace(int sizecompare, int size) {
 	}
 }*/
 
+
 /*int main() {
+
 	char * path = "./images-test/";
 	
 	list * data = malloc(sizeof(list));

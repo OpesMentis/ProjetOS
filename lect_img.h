@@ -1,3 +1,6 @@
+#ifndef _LECTIMGH_
+#define _LECTIMGH_
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,3 +34,5 @@ void add_node(char * addr, list * data);
 int calcsize(int a);
 void print_espace(int sizecompare, int size);
 //void print_list(list data);
+
+#endif

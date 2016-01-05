@@ -29,5 +29,5 @@ typedef struct list {
 list acqui_info(char * path);
 void add_node(char * addr, list * data);
 int calcsize(int a);
-void print_espace(int sizecompare, int size)
+void print_espace(int sizecompare, int size);
 //void print_list(list data);

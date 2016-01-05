@@ -1,5 +1,5 @@
-# Read an image with xli.
 all : application
+
 
 # Test : dep with .h versus dep with .c
 
@@ -14,6 +14,9 @@ mem_targa.o : mem_targa.c mem_targa.h
 lect_img.o : lect_img.c mem_targa.h 
 	gcc -g -Wall -c lect_img.c -o lect_img.o
 	
+#crypt_img.o : crypt_img.c crypt_img.h 
+#	gcc -g -Wall -c crypt_img.c -o crypt_img.o
+
 serveur.o : serveur.c  strhelpers.h lect_img.h mem_targa.h 
 	gcc -c serveur.c -o serveur.o
 
@@ -23,3 +26,12 @@ client.o : client.c strhelpers.h lect_img.h mem_targa.h
 strhelpers.o : strhelpers.c 
 	gcc -c strhelpers.c -o strhelpers.o
 
+
+# serveur.o : serveur.c strhelpers.h
+#	gcc -c serveur.c -o serveur.o
+	
+# client.o : client.c strhelpers.h
+#	gcc -c client.c -o client.o
+	
+# strhelpers.o : strhelpers.c
+#	gcc -c strhelpers.c -o strhelpers.o

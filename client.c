@@ -14,6 +14,7 @@
 #include "strhelpers.h"
 #include "lect_img.h"
 #include "client.h"
+#include "lect_img.h"
 
 #define MAXTEXT 1024
 
